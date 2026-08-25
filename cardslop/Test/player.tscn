@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cl4xivdhhcbae"]
+
+[ext_resource type="Script" uid="uid://bvxp35pxmngss" path="res://Test/playercontroller.gd" id="1_2r6t2"]
+[ext_resource type="BoxMesh" uid="uid://ce6ck3eeqcymn" path="res://Test/eye_mesh.tres" id="2_fef32"]
+[ext_resource type="Material" uid="uid://cuu0e27xhflyy" path="res://Test/eye_mesh_mat.tres" id="3_7e3xn"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1k2yb"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_um4t0"]
+
+[node name="Player" type="CharacterBody3D" unique_id=336316004]
+script = ExtResource("1_2r6t2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2046490488]
+shape = SubResource("CapsuleShape3D_1k2yb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1410949158]
+mesh = SubResource("CapsuleMesh_um4t0")
+
+[node name="Head" type="MeshInstance3D" parent="." unique_id=1241282113]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5611678, -0.30775434)
+mesh = ExtResource("2_fef32")
+surface_material_override/0 = ExtResource("3_7e3xn")
+
+[node name="EyeCamera" type="Camera3D" parent="Head" unique_id=1066310856]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.062172234, 0.10022795)
+current = true
