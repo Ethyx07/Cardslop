@@ -5,8 +5,18 @@
 [ext_resource type="Material" uid="uid://cuu0e27xhflyy" path="res://Test/eye_mesh_mat.tres" id="3_7e3xn"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1k2yb"]
+radius = 0.6
+height = 2.1
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_um4t0"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_7e3xn"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Head:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=336316004]
 script = ExtResource("1_2r6t2")
@@ -25,3 +35,6 @@ surface_material_override/0 = ExtResource("3_7e3xn")
 [node name="EyeCamera" type="Camera3D" parent="Head" unique_id=1066310856]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.062172234, 0.10022795)
 current = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1558943100]
+replication_config = SubResource("SceneReplicationConfig_7e3xn")

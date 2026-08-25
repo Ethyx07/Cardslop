@@ -1,15 +1,22 @@
 [gd_scene format=3 uid="uid://cjxkkx18kqj1k"]
 
-[ext_resource type="PackedScene" uid="uid://cl4xivdhhcbae" path="res://Test/player.tscn" id="1_me6wu"]
 [ext_resource type="Script" uid="uid://bxmpa2m5w6bug" path="res://Test/main.gd" id="1_uixho"]
 
 [node name="Main" type="Node3D" unique_id=2025700800]
 script = ExtResource("1_uixho")
 
-[node name="Player" parent="." unique_id=336316004 instance=ExtResource("1_me6wu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8113723, 4.6775246, -0.8044121)
-
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=982512724]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2781677, 0, -2.1464844)
 use_collision = true
 size = Vector3(16.384216, 1, 11.943359)
+
+[node name="SpawnPoint" type="Node3D" parent="." unique_id=1460828148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.08777, -2.2245421)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=2061759810]
+_spawnable_scenes = PackedStringArray("uid://cl4xivdhhcbae")
+spawn_path = NodePath("..")
+
+[node name="DebugLabel" type="Label" parent="." unique_id=2044274445]
+offset_right = 40.0
+offset_bottom = 23.0
