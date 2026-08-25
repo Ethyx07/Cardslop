@@ -22,7 +22,7 @@ func spawn_player(peer_id : int) -> void:
 	
 	var spawn_data := {
 		"peer_id": peer_id,
-		"position": $SpawnPoint.global_position
+		"position": $SpawnPoint.position
 	}
 	
 	$MultiplayerSpawner.spawn(spawn_data)
@@ -31,7 +31,7 @@ func spawn_player_from_data(data : Dictionary) -> Node:
 	var new_player := PLAYERCONTROLLER.instantiate() as CharacterBody3D
 	
 	new_player.name = str(data["peer_id"])
-	new_player.global_position = data["position"]
+	new_player.position = data["position"]
 	
 	return new_player
 func initialise_player(player : CharacterBody3D) -> void:	

@@ -27,14 +27,17 @@ shape = SubResource("CapsuleShape3D_1k2yb")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1410949158]
 mesh = SubResource("CapsuleMesh_um4t0")
 
-[node name="Head" type="MeshInstance3D" parent="." unique_id=1241282113]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5611678, -0.30775434)
-mesh = ExtResource("2_fef32")
-surface_material_override/0 = ExtResource("3_7e3xn")
+[node name="Head" type="Node3D" parent="." unique_id=2058639414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.561, 0)
 
 [node name="EyeCamera" type="Camera3D" parent="Head" unique_id=1066310856]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.062172234, 0.10022795)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.062172234, -0.18586695)
 current = true
+
+[node name="HeadMesh" type="MeshInstance3D" parent="Head" unique_id=58465097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2860949)
+mesh = ExtResource("2_fef32")
+surface_material_override/0 = ExtResource("3_7e3xn")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1558943100]
 replication_config = SubResource("SceneReplicationConfig_7e3xn")
