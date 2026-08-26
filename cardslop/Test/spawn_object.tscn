@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dlq2j3xu7kerd"]
+
+[ext_resource type="Script" uid="uid://dwh0thwlj5vi3" path="res://Test/spawn_object.gd" id="1_im8x0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yxb71"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_im8x0"]
+properties/0/path = NodePath(".:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="SpawnObject" type="MeshInstance3D" unique_id=480081971]
+mesh = SubResource("BoxMesh_yxb71")
+script = ExtResource("1_im8x0")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=686321326]
+replication_config = SubResource("SceneReplicationConfig_im8x0")

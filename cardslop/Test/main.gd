@@ -1,13 +1,13 @@
 extends Node3D
 
 const PLAYERCONTROLLER = preload("uid://cl4xivdhhcbae")
-
+const OBJECT = preload("uid://dlq2j3xu7kerd")
 var players : Array[CharacterBody3D]
 
 func _ready() -> void:
 	Networking.host_created.connect(on_host_created)
 	
-	$MultiplayerSpawner.spawn_function = spawn_player_from_data
+	$MultiplayerSpawner.spawn_function = spawn_from_data
 	
 
 func on_host_created() -> void:
@@ -21,19 +21,28 @@ func spawn_player(peer_id : int) -> void:
 		return
 	
 	var spawn_data := {
+		"type": "player",
 		"peer_id": peer_id,
 		"position": $SpawnPoint.position
 	}
 	
 	$MultiplayerSpawner.spawn(spawn_data)
 
-func spawn_player_from_data(data : Dictionary) -> Node:
-	var new_player := PLAYERCONTROLLER.instantiate() as CharacterBody3D
+func spawn_from_data(data : Dictionary) -> Node:
+	if data["type"] == "player":
+		var new_player := PLAYERCONTROLLER.instantiate() as CharacterBody3D
+		
+		new_player.name = str(data["peer_id"])
+		new_player.position = data["position"]
+		return new_player
 	
-	new_player.name = str(data["peer_id"])
-	new_player.position = data["position"]
+	elif data["type"] == "object":
+		var new_object := OBJECT.instantiate()
+		new_object.position = data["position"]
+		return new_object 
 	
-	return new_player
+	return null
+	
 func initialise_player(player : CharacterBody3D) -> void:	
 	for other in players:
 		player.add_collision_exception_with(other)
@@ -63,3 +72,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().quit()
 	elif event.is_action_pressed("Host"):
 		Networking.host_lobby()
+
+func spawn_object(spawn_position : Vector3) -> void:
+	$MultiplayerSpawner.spawn({
+		"type": "object",
+		"position": spawn_position
+		})

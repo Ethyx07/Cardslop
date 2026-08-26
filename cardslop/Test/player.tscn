@@ -17,6 +17,9 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("Head:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("Head/Label3D:text")
+properties/2/spawn = true
+properties/2/replication_mode = 2
 
 [node name="Player" type="CharacterBody3D" unique_id=336316004]
 script = ExtResource("1_2r6t2")
@@ -38,6 +41,10 @@ current = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2860949)
 mesh = ExtResource("2_fef32")
 surface_material_override/0 = ExtResource("3_7e3xn")
+
+[node name="Label3D" type="Label3D" parent="Head" unique_id=1615752784]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.79948604, 0)
+text = "Bob"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1558943100]
 replication_config = SubResource("SceneReplicationConfig_7e3xn")
