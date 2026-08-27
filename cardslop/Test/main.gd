@@ -46,7 +46,11 @@ func spawn_from_data(data : Dictionary) -> Node:
 	elif data["type"] == "object":
 		var new_object := OBJECT.instantiate()
 		new_object.position = data["position"] + Vector3(0,2,0)
-		new_object.trainer = get_node_or_null(str(data["peer_id"]))
+		var trainer = get_node_or_null(str(data["peer_id"])) as PlayerController
+		if not trainer:
+			return null
+		trainer.set_monster(new_object)
+		new_object.trainer = trainer
 		return new_object 
 	
 	return null

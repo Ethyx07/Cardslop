@@ -1,8 +1,12 @@
 extends CharacterBody3D
 
+class_name PlayerController
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+
+var current_monster : Monster
+var monster_spawned := false
 
 @export var mouse_sensitivity := 0.001
 @onready var head : Node3D = $Head
@@ -45,6 +49,16 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+func set_monster(monster : Monster) -> void:
+	if not monster:
+		return
+	current_monster = monster
+	monster_spawned = true
+	
+func clear_monster() -> void:
+	current_monster = null
+	monster_spawned = false
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -55,8 +69,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		eye_camera.rotate_x(-relative.y)
 		eye_camera.rotation.x = clamp(eye_camera.rotation.x, deg_to_rad(-40), deg_to_rad(40))
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		try_spawn_object()
-		
+		if not current_monster:
+			try_spawn_object()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if current_monster:
+			if multiplayer.is_server():
+				request_despawn(current_monster)
+			else:
+				request_despawn.rpc_id(1, current_monster)
 
 func try_spawn_object() -> void:
 	var startPos := eye_camera.global_position
@@ -79,3 +99,11 @@ func request_spawn(spawn_position : Vector3, peer_id : int) -> void:
 		return
 	
 	get_parent().spawn_object(spawn_position, peer_id)
+
+@rpc("any_peer", "call_local", "reliable")
+func request_despawn(monster : Monster) -> void:
+	if not monster:
+		return
+	monster.queue_free()
+	
+	
