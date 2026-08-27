@@ -68,14 +68,14 @@ func try_spawn_object() -> void:
 	
 	if result:
 		if multiplayer.is_server():
-			request_spawn(result.position)
+			request_spawn(result.position, multiplayer.get_unique_id())
 		else:
-			request_spawn.rpc_id(1, result.position)
+			request_spawn.rpc_id(1, result.position, multiplayer.get_unique_id())
 		
 
 @rpc("any_peer", "call_remote", "reliable")
-func request_spawn(spawn_position : Vector3) -> void:
+func request_spawn(spawn_position : Vector3, peer_id : int) -> void:
 	if not multiplayer.is_server():
 		return
 	
-	get_parent().spawn_object(spawn_position)
+	get_parent().spawn_object(spawn_position, peer_id)

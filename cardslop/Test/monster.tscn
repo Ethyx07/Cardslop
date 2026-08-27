@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bspd4g0rn741p"]
+
+[ext_resource type="Script" uid="uid://wet4ppss1hwn" path="res://Test/monster.gd" id="1_ox865"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f3lcx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1s8yu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ox865"]
+albedo_color = Color(6.738305e-07, 0.6894205, 0.15745771, 1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ox865"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Monster" type="CharacterBody3D" unique_id=1624554203]
+script = ExtResource("1_ox865")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1772592838]
+shape = SubResource("BoxShape3D_f3lcx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1361653271]
+mesh = SubResource("BoxMesh_1s8yu")
+surface_material_override/0 = SubResource("StandardMaterial3D_ox865")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=495586475]
+path_desired_distance = 0.5
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=956509834]
+replication_config = SubResource("SceneReplicationConfig_ox865")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=584647528]
+radius = 1.0
+affect_navigation_mesh = true

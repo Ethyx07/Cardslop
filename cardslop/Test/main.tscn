@@ -2,16 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bxmpa2m5w6bug" path="res://Test/main.gd" id="1_uixho"]
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_i2127"]
+vertices = PackedVector3Array(-0.7202759, 0.92637897, 3.381836, -0.47027588, 1.426379, 4.631836, 3.7797241, 1.176379, 4.131836, 3.5297241, 0.92637897, -7.618164, -6.470276, 0.92637897, 5.381836, -2.2202759, 0.92637897, 5.381836, -1.9702759, 0.92637897, 3.381836, -6.720276, 0.92637897, 3.381836, -11.970276, 0.92637897, -7.618164, -11.970276, 0.92637897, 3.381836, -0.47027588, 1.176379, 13.881836, 3.5297241, 0.92637897, 15.381836, 4.029724, 0.92637897, 15.131836, -0.47027588, 2.926379, 8.596123, -0.47027588, 2.926379, 9.917551, 3.9047241, 2.926379, 9.631836, 3.8734741, 2.926379, 8.256836, 1.0147963, 2.926379, 9.872759, 2.539857, 1.426379, 12.877695, -1.2202759, 0.92637897, 13.881836, -1.2202759, 0.92637897, 11.381836, -2.2202759, 0.92637897, 11.131836, -6.470276, 0.92637897, 11.131836, 3.5297241, 0.92637897, 22.381836, -11.970276, 0.92637897, 11.381836, -11.970276, 0.92637897, 22.381836)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(4, 7, 5), PackedInt32Array(5, 7, 6), PackedInt32Array(7, 8, 6), PackedInt32Array(6, 8, 3), PackedInt32Array(3, 0, 6), PackedInt32Array(7, 9, 8), PackedInt32Array(2, 16, 1), PackedInt32Array(1, 16, 13), PackedInt32Array(13, 17, 14), PackedInt32Array(14, 17, 10), PackedInt32Array(10, 18, 11), PackedInt32Array(11, 18, 12), PackedInt32Array(12, 18, 15), PackedInt32Array(15, 17, 16), PackedInt32Array(16, 17, 13), PackedInt32Array(17, 18, 10), PackedInt32Array(18, 17, 15), PackedInt32Array(20, 19, 21), PackedInt32Array(21, 19, 22), PackedInt32Array(10, 11, 19), PackedInt32Array(19, 11, 23), PackedInt32Array(22, 4, 21), PackedInt32Array(21, 4, 5), PackedInt32Array(22, 19, 24), PackedInt32Array(24, 19, 25), PackedInt32Array(25, 19, 23)]
+
 [node name="Main" type="Node3D" unique_id=2025700800]
 script = ExtResource("1_uixho")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=982512724]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2781677, 0, -2.1464844)
-layers = 2
-use_collision = true
-collision_layer = 3
-collision_mask = 2
-size = Vector3(16.384216, 1, 11.943359)
 
 [node name="SpawnPoint" type="Node3D" parent="." unique_id=1460828148]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.08777, -2.2245421)
@@ -26,3 +22,46 @@ offset_bottom = 23.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=278550474]
 transform = Transform3D(1, 0, 0, 0, -0.007831537, 0.9999693, 0, -0.9999693, -0.007831537, 0, 10.492791, 0)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1444252055]
+navigation_mesh = SubResource("NavigationMesh_i2127")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D" unique_id=982512724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2781677, 0, -2.1464844)
+layers = 2
+use_collision = true
+collision_layer = 3
+collision_mask = 2
+size = Vector3(16.384216, 1, 11.943359)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1111336787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2781677, 0, 16.875923)
+layers = 2
+use_collision = true
+collision_layer = 3
+collision_mask = 2
+size = Vector3(16.384216, 1, 11.943359)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1042233208]
+transform = Transform3D(0.30206788, 0, 0, 0, 1, 0, 0, 0, 1, -4.2781677, 0, 7.5942287)
+layers = 2
+use_collision = true
+collision_layer = 3
+collision_mask = 2
+size = Vector3(16.384216, 1, 11.943359)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D" unique_id=312385703]
+transform = Transform3D(0.30206788, 0, 0, 0, 0.9182722, 0.39594972, 0, -0.39594972, 0.9182722, 1.7331901, 0, 3.7856455)
+layers = 2
+use_collision = true
+collision_layer = 3
+collision_mask = 2
+size = Vector3(16.384216, 1, 11.943359)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1306818233]
+transform = Transform3D(-0.3019831, 0.00938046, -0.021754801, 1.2816015e-08, 0.91827214, 0.3959497, 0.0071562864, 0.39583853, -0.9180144, 1.870151, 0, 14.355762)
+layers = 2
+use_collision = true
+collision_layer = 3
+collision_mask = 2
+size = Vector3(16.384216, 1, 11.943359)

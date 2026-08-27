@@ -24,6 +24,10 @@ Networking="*uid://8hqs16mv8no5"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[global_group]
+
+Players="The grouping for all players"
+
 [input]
 
 Up={

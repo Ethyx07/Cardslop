@@ -1,7 +1,7 @@
 extends Node3D
 
 const PLAYERCONTROLLER = preload("uid://cl4xivdhhcbae")
-const OBJECT = preload("uid://dlq2j3xu7kerd")
+const OBJECT = preload("uid://bspd4g0rn741p")
 var players : Array[CharacterBody3D]
 
 func _ready() -> void:
@@ -28,6 +28,13 @@ func spawn_player(peer_id : int) -> void:
 	
 	$MultiplayerSpawner.spawn(spawn_data)
 
+func spawn_object(spawn_position : Vector3, peer_id : int) -> void:
+	$MultiplayerSpawner.spawn({
+		"type": "object",
+		"position": spawn_position,
+		"peer_id": peer_id
+		})
+
 func spawn_from_data(data : Dictionary) -> Node:
 	if data["type"] == "player":
 		var new_player := PLAYERCONTROLLER.instantiate() as CharacterBody3D
@@ -38,7 +45,8 @@ func spawn_from_data(data : Dictionary) -> Node:
 	
 	elif data["type"] == "object":
 		var new_object := OBJECT.instantiate()
-		new_object.position = data["position"]
+		new_object.position = data["position"] + Vector3(0,2,0)
+		new_object.trainer = get_node_or_null(str(data["peer_id"]))
 		return new_object 
 	
 	return null
@@ -72,9 +80,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().quit()
 	elif event.is_action_pressed("Host"):
 		Networking.host_lobby()
-
-func spawn_object(spawn_position : Vector3) -> void:
-	$MultiplayerSpawner.spawn({
-		"type": "object",
-		"position": spawn_position
-		})
