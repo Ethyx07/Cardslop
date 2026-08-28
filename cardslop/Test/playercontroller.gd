@@ -74,9 +74,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if current_monster:
 			if multiplayer.is_server():
-				request_despawn(current_monster)
+				request_despawn(current_monster.name)
 			else:
-				request_despawn.rpc_id(1, current_monster)
+				request_despawn.rpc_id(1, current_monster.name)
 
 func try_spawn_object() -> void:
 	var startPos := eye_camera.global_position
@@ -100,10 +100,13 @@ func request_spawn(spawn_position : Vector3, peer_id : int) -> void:
 	
 	get_parent().spawn_object(spawn_position, peer_id)
 
-@rpc("any_peer", "call_local", "reliable")
-func request_despawn(monster : Monster) -> void:
+@rpc("any_peer", "call_remote", "reliable")
+func request_despawn(monster_name : String) -> void:
+	var monster = get_parent().get_node_or_null(monster_name) as Monster
 	if not monster:
 		return
-	monster.queue_free()
+	
+	monster.queue_free()	
+
 	
 	
