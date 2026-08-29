@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Monster_Data" format=3 uid="uid://nyqbayhmaq5t"]
+
+[ext_resource type="Script" uid="uid://bj3d3m1o1wj0e" path="res://MonsterData/monster_data.gd" id="1_r3vhi"]
+
+[resource]
+script = ExtResource("1_r3vhi")
+monster_name = "Piss Boy"
+monster_colour = Color(0.0038543106, 0.5187386, 0.99999994, 1)
+metadata/_custom_type_script = "uid://bj3d3m1o1wj0e"

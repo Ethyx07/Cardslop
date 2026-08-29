@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Monster_Data" format=3 uid="uid://byoqg3mpofgvs"]
+
+[ext_resource type="Script" uid="uid://bj3d3m1o1wj0e" path="res://MonsterData/monster_data.gd" id="1_wtyu7"]
+
+[resource]
+script = ExtResource("1_wtyu7")
+monster_name = "Caesar Salad"
+monster_colour = Color(0.16230989, 0.6381401, 1.347661e-06, 1)
+metadata/_custom_type_script = "uid://bj3d3m1o1wj0e"

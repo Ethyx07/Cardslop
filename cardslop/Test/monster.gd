@@ -5,15 +5,14 @@ class_name Monster
 @onready var nav : NavigationAgent3D = $NavigationAgent3D
 var trainer : Node3D
 
+var monster_name : String
+
 const SPEED : float = 2.0
 const ACCEL : float = 5.0
 const TARGET_DISTANCE : float = 3.0
 
 func _enter_tree() -> void:
-	var material = $MeshInstance3D.get_active_material(0) as StandardMaterial3D
-	var new_material = material.duplicate()
-	new_material.albedo_color = Color(randf(), randf(), randf(), 1)
-	$MeshInstance3D.set_surface_override_material(0, new_material)
+	pass
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
@@ -36,3 +35,10 @@ func _physics_process(delta: float) -> void:
 		var facing_angle = atan2(velocity.x, velocity.z)
 		global_rotation.y = facing_angle
 	
+func set_monster_data(data : Monster_Data)-> void:
+	monster_name = data.monster_name
+	$name.text = monster_name
+	var material = $MeshInstance3D.get_active_material(0) as StandardMaterial3D
+	var new_material = material.duplicate()
+	new_material.albedo_color = data.monster_colour
+	$MeshInstance3D.set_surface_override_material(0, new_material)

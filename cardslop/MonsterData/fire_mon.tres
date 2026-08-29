@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Monster_Data" format=3 uid="uid://pkiyr2cgd6mf"]
+
+[ext_resource type="Script" uid="uid://bj3d3m1o1wj0e" path="res://MonsterData/monster_data.gd" id="1_t8etk"]
+
+[resource]
+script = ExtResource("1_t8etk")
+monster_name = "Hot Cheetos"
+monster_colour = Color(0.99215686, 0, 0, 1)
+metadata/_custom_type_script = "uid://bj3d3m1o1wj0e"

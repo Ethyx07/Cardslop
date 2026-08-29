@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bvxp35pxmngss" path="res://Test/playercontroller.gd" id="1_2r6t2"]
 [ext_resource type="BoxMesh" uid="uid://ce6ck3eeqcymn" path="res://Test/eye_mesh.tres" id="2_fef32"]
 [ext_resource type="Material" uid="uid://cuu0e27xhflyy" path="res://Test/eye_mesh_mat.tres" id="3_7e3xn"]
+[ext_resource type="Script" uid="uid://bwbej5beq06k0" path="res://Test/player_inventory.gd" id="4_f058k"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1k2yb"]
 radius = 0.6
@@ -53,3 +54,25 @@ replication_config = SubResource("SceneReplicationConfig_7e3xn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0)
 radius = 0.84
 height = 0.0
+
+[node name="PlayerUI" type="CanvasLayer" parent="." unique_id=1541781104]
+
+[node name="PlayerInventory" type="HBoxContainer" parent="PlayerUI" unique_id=779693098 node_paths=PackedStringArray("controlling_player")]
+custom_minimum_size = Vector2(500, 100)
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+script = ExtResource("4_f058k")
+controlling_player = NodePath("../..")
+
+[node name="Label" type="Label" parent="PlayerUI/PlayerInventory" unique_id=245245251]
+layout_mode = 2
+text = "TEXT"

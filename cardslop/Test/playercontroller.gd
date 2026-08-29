@@ -12,15 +12,22 @@ var monster_spawned := false
 @onready var head : Node3D = $Head
 @onready var eye_camera: Camera3D = $Head/EyeCamera
 
+var monsters = ["fire", "water", "grass"]
+var current_monster_data : String
+
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 	var steam_id = Steam.getSteamID()
 	var player_name = Steam.getFriendPersonaName(steam_id)
 	$Head/Label3D.text = player_name
-
+	current_monster_data = monsters.pick_random()
+	$PlayerUI/PlayerInventory/Label.text = current_monster_data
+	
 func _ready() -> void:
+	$PlayerUI.visible = is_multiplayer_authority()
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
@@ -46,7 +53,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	
 	move_and_slide()
 
 func set_monster(monster : Monster) -> void:
@@ -59,6 +66,10 @@ func clear_monster() -> void:
 	current_monster = null
 	monster_spawned = false
 
+func set_selected_monster(monster : String) -> void:
+	current_monster_data = monster
+	$PlayerUI/PlayerInventory/Label.text = current_monster_data
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -70,7 +81,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		eye_camera.rotation.x = clamp(eye_camera.rotation.x, deg_to_rad(-40), deg_to_rad(40))
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if not current_monster:
-			try_spawn_object()
+			try_spawn_monster()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if current_monster:
 			if multiplayer.is_server():
@@ -78,7 +89,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				request_despawn.rpc_id(1, current_monster.name)
 
-func try_spawn_object() -> void:
+func try_spawn_monster() -> void:
 	var startPos := eye_camera.global_position
 	var endPos := startPos + -(eye_camera.global_basis.z * 20)
 	
@@ -88,17 +99,17 @@ func try_spawn_object() -> void:
 	
 	if result:
 		if multiplayer.is_server():
-			request_spawn(result.position, multiplayer.get_unique_id())
+			request_spawn(result.position, multiplayer.get_unique_id(), current_monster_data)
 		else:
-			request_spawn.rpc_id(1, result.position, multiplayer.get_unique_id())
+			request_spawn.rpc_id(1, result.position, multiplayer.get_unique_id(), current_monster_data)
 		
 
 @rpc("any_peer", "call_remote", "reliable")
-func request_spawn(spawn_position : Vector3, peer_id : int) -> void:
+func request_spawn(spawn_position : Vector3, peer_id : int, monster_data : String) -> void:
 	if not multiplayer.is_server():
 		return
 	
-	get_parent().spawn_object(spawn_position, peer_id)
+	get_parent().spawn_monster(spawn_position, peer_id, monster_data)
 
 @rpc("any_peer", "call_remote", "reliable")
 func request_despawn(monster_name : String) -> void:
