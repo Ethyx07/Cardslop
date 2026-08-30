@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b2wgydhjcfr8l"]
+
+[ext_resource type="Texture2D" uid="uid://b4eq0rb5ndl8w" path="res://Test/TestTexture/GrassTemp.png" id="1_y4yh7"]
+[ext_resource type="Script" uid="uid://c1xjvba2n73i1" path="res://ItemsData/item_data.gd" id="2_surd7"]
+
+[resource]
+script = ExtResource("2_surd7")
+item_key = "grass"
+item_name = "Caesar Salad"
+item_sprite = ExtResource("1_y4yh7")
+metadata/_custom_type_script = "uid://c1xjvba2n73i1"

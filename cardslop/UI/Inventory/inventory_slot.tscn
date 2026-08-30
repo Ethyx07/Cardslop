@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://iacrjivymled"]
+
+[ext_resource type="Script" uid="uid://y4iiywxru7hn" path="res://UI/Inventory/inventory_slot.gd" id="1_w8suq"]
+
+[node name="PanelContainer" type="PanelContainer" unique_id=397792379]
+custom_minimum_size = Vector2(100, 100)
+custom_maximum_size = Vector2(100, 100)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_w8suq")
+
+[node name="ItemTexture" type="TextureRect" parent="." unique_id=1620638892]
+texture_filter = 1
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.85, 0.85)

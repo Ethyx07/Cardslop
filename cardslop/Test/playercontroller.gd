@@ -4,15 +4,18 @@ class_name PlayerController
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+const INVENTORY_SIZE = 5
 
 var current_monster : Monster
 var monster_spawned := false
 
+var hovered_interactable : Interactable
+
 @export var mouse_sensitivity := 0.001
 @onready var head : Node3D = $Head
 @onready var eye_camera: Camera3D = $Head/EyeCamera
+var player_inventory : PlayerInventory
 
-var monsters = ["fire", "water", "grass"]
 var current_monster_data : String
 
 func _enter_tree() -> void:
@@ -20,8 +23,8 @@ func _enter_tree() -> void:
 	var steam_id = Steam.getSteamID()
 	var player_name = Steam.getFriendPersonaName(steam_id)
 	$Head/Label3D.text = player_name
-	current_monster_data = monsters.pick_random()
-	$PlayerUI/PlayerInventory/Label.text = current_monster_data
+	player_inventory = $PlayerUI/PlayerInventory
+	
 	
 func _ready() -> void:
 	$PlayerUI.visible = is_multiplayer_authority()
@@ -39,10 +42,28 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
+	if Input.is_action_just_pressed("Interact") and hovered_interactable:
+		hovered_interactable.on_interacted(self)
 	# Handle jump.
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
+		
+	var startPos := eye_camera.global_position
+	var endPos := startPos + -(eye_camera.global_basis.z * 20)
+	
+	var ray := PhysicsRayQueryParameters3D.create(startPos, endPos)
+	ray.collision_mask = 1 << 2
+	var result := get_world_3d().direct_space_state.intersect_ray(ray)
+	if result:
+		var collider = result.collider as Interactable
+		if collider:
+			hovered_interactable = collider
+			hovered_interactable.set_hovered_over(true)
+	else:
+		if hovered_interactable:
+			hovered_interactable.set_hovered_over(false)
+			hovered_interactable = null
+			
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("Left", "Right", "Up", "Down")
@@ -56,6 +77,21 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+func get_inventory_size() -> int:
+	return INVENTORY_SIZE
+
+func add_item_to_inventory(item : Item) -> void:
+	if not player_inventory:
+		push_error("Player inventory not set")
+		return
+	player_inventory.add_to_inventory(item)
+
+func remove_item_from_inventory(item : Item) -> void:
+	if not player_inventory:
+		push_error("Player inventory not set")
+		return
+	player_inventory.remove_from_inventory(item)
+
 func set_monster(monster : Monster) -> void:
 	if not monster:
 		return
@@ -65,10 +101,6 @@ func set_monster(monster : Monster) -> void:
 func clear_monster() -> void:
 	current_monster = null
 	monster_spawned = false
-
-func set_selected_monster(monster : String) -> void:
-	current_monster_data = monster
-	$PlayerUI/PlayerInventory/Label.text = current_monster_data
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
@@ -80,8 +112,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		eye_camera.rotate_x(-relative.y)
 		eye_camera.rotation.x = clamp(eye_camera.rotation.x, deg_to_rad(-40), deg_to_rad(40))
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if not current_monster:
-			try_spawn_monster()
+		#if not current_monster:
+			#try_spawn_monster()
+		var hovered_item = player_inventory.get_currently_hovered() as Item
+		if hovered_item:
+			hovered_item.on_item_use(self)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if current_monster:
 			if multiplayer.is_server():
@@ -89,7 +124,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				request_despawn.rpc_id(1, current_monster.name)
 
-func try_spawn_monster() -> void:
+func try_spawn_monster(key : String) -> void:
+	if current_monster:
+		return
 	var startPos := eye_camera.global_position
 	var endPos := startPos + -(eye_camera.global_basis.z * 20)
 	
@@ -99,9 +136,9 @@ func try_spawn_monster() -> void:
 	
 	if result:
 		if multiplayer.is_server():
-			request_spawn(result.position, multiplayer.get_unique_id(), current_monster_data)
+			request_spawn(result.position, multiplayer.get_unique_id(), key)
 		else:
-			request_spawn.rpc_id(1, result.position, multiplayer.get_unique_id(), current_monster_data)
+			request_spawn.rpc_id(1, result.position, multiplayer.get_unique_id(), key)
 		
 
 @rpc("any_peer", "call_remote", "reliable")

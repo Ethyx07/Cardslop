@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://yk8syj882a5q"]
+
+[ext_resource type="Texture2D" uid="uid://dskc56835jm7c" path="res://Test/TestTexture/WaterTemp.png" id="1_q1322"]
+[ext_resource type="Script" uid="uid://c1xjvba2n73i1" path="res://ItemsData/item_data.gd" id="2_74bgp"]
+
+[resource]
+script = ExtResource("2_74bgp")
+item_key = "water"
+item_name = "Piss Boy"
+item_sprite = ExtResource("1_q1322")
+metadata/_custom_type_script = "uid://c1xjvba2n73i1"

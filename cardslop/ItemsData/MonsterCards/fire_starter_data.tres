@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://2twhyqyaf5yo"]
+
+[ext_resource type="Script" uid="uid://c1xjvba2n73i1" path="res://ItemsData/item_data.gd" id="1_jekuy"]
+[ext_resource type="Texture2D" uid="uid://c6g53vtimdywj" path="res://Test/TestTexture/FireTemp.png" id="1_rw073"]
+
+[resource]
+script = ExtResource("1_jekuy")
+item_key = "fire"
+item_name = "Hot Cheetos"
+item_sprite = ExtResource("1_rw073")
+metadata/_custom_type_script = "uid://c1xjvba2n73i1"

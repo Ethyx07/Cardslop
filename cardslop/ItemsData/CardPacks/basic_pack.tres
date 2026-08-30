@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://uahckpyfglq8"]
+
+[ext_resource type="Script" uid="uid://c1xjvba2n73i1" path="res://ItemsData/item_data.gd" id="1_fthj6"]
+[ext_resource type="Texture2D" uid="uid://ciaq3644sigpt" path="res://Test/TestTexture/CardBasicTemp.png" id="1_vwtq0"]
+
+[resource]
+script = ExtResource("1_fthj6")
+item_key = "basic_pack"
+item_name = "Basic Pack"
+item_value = 1
+item_sprite = ExtResource("1_vwtq0")
+metadata/_custom_type_script = "uid://c1xjvba2n73i1"

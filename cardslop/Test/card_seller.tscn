@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dqodrwm2b4no1"]
+
+[ext_resource type="Script" uid="uid://dc7a0cpahyalt" path="res://Test/card_seller.gd" id="1_11dfa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i2127"]
+radius = 0.56640625
+height = 2.131836
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g0lfa"]
+
+[node name="card_seller" type="StaticBody3D" unique_id=2004102130]
+collision_layer = 5
+script = ExtResource("1_11dfa")
+
+[node name="InteractableLabel" type="Label3D" parent="." unique_id=204901610]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.52337116)
+text = "Press \"E\" To Purchase"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2032666076]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0034179688, 0)
+shape = SubResource("CapsuleShape3D_i2127")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=319452630]
+mesh = SubResource("CapsuleMesh_g0lfa")
