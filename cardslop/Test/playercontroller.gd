@@ -12,22 +12,27 @@ var monster_spawned := false
 var hovered_interactable : Interactable
 
 @export var mouse_sensitivity := 0.001
+
 @onready var head : Node3D = $Head
 @onready var eye_camera: Camera3D = $Head/EyeCamera
-var player_inventory : PlayerInventory
+@onready var player_inventory : PlayerInventory = $PlayerUI/PlayerInventory
+
+#Server side REAL inventory (not just the visual stuff the ui does)
+var inventory : Array[ItemData] = [] #Empty so sad :(
 
 var current_monster_data : String
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
+	
 	var steam_id = Steam.getSteamID()
 	var player_name = Steam.getFriendPersonaName(steam_id)
 	$Head/Label3D.text = player_name
-	player_inventory = $PlayerUI/PlayerInventory
 	
 	
 func _ready() -> void:
 	$PlayerUI.visible = is_multiplayer_authority()
+	
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		
@@ -57,12 +62,14 @@ func _physics_process(delta: float) -> void:
 	if result:
 		var collider = result.collider as Interactable
 		if collider:
+			if hovered_interactable and hovered_interactable != collider:
+				hovered_interactable.set_hovered_over(false) #Disables hovered interactable if we go from one to another in one frame
+				
 			hovered_interactable = collider
 			hovered_interactable.set_hovered_over(true)
 	else:
 		if hovered_interactable:
-			hovered_interactable.set_hovered_over(false)
-			hovered_interactable = null
+			clear_hovered_interactable()
 			
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -77,20 +84,75 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+func clear_hovered_interactable() -> void:
+	hovered_interactable.set_hovered_over(false)
+	hovered_interactable = null
+
 func get_inventory_size() -> int:
 	return INVENTORY_SIZE
 
-func add_item_to_inventory(item : Item) -> void:
-	if not player_inventory:
-		push_error("Player inventory not set")
-		return
-	player_inventory.add_to_inventory(item)
+#--------------------------------------------
+#		INVENTORY LOGIC
+#--------------------------------------------
 
-func remove_item_from_inventory(item : Item) -> void:
-	if not player_inventory:
-		push_error("Player inventory not set")
+#If server we can just add the item
+#If client we want to get the server to add it first then replicate it on our clients
+func request_add_item(item_data : ItemData) -> void:
+	if multiplayer.is_server():
+		add_item_to_inventory(item_data)
+	else:
+		request_add_item_server.rpc_id(1, item_data)
+
+@rpc("any_peer", "call_remote", "reliable")
+func request_add_item_server(item_data : ItemData) -> void:
+	if not multiplayer.is_server():
 		return
-	player_inventory.remove_from_inventory(item)
+	var sender_id := multiplayer.get_remote_sender_id()
+	if sender_id != get_multiplayer_authority(): #Gotta make sure we only adjust the senders inventory
+		return
+	
+	add_item_to_inventory(item_data)
+
+#SERVER ONLY
+func add_item_to_inventory(item_data : ItemData) -> void:
+	if not multiplayer.is_server(): 
+		return
+	
+	if inventory.size() >= INVENTORY_SIZE:
+		return
+	
+	inventory.append(item_data)
+	sync_inventory_to_owner()
+
+#SERVER ONLY
+func remove_item_from_inventory(slot_index : int) -> void:
+	if not multiplayer.is_server(): 
+		return
+	
+	if slot_index < 0 or slot_index >= inventory.size(): #Cant remove from slot if its an empty one
+		return
+	
+	inventory.remove_at(slot_index)
+	
+	sync_inventory_to_owner()
+
+func sync_inventory_to_owner() -> void:
+	if not multiplayer.is_server():
+		return
+	
+	var owner_id := get_multiplayer_authority() 
+	if owner_id == multiplayer.get_unique_id(): #Checks if its server that we are updating
+		update_inventory_ui(inventory)
+	else:
+		update_inventory_ui.rpc_id(1, inventory)
+		
+@rpc("authority", "call_remote", "reliable")
+func update_inventory_ui(new_inventory : Array[ItemData]) -> void:
+	if not is_multiplayer_authority():
+		return
+	
+	player_inventory.set_inventory(new_inventory)
+
 
 func set_monster(monster : Monster) -> void:
 	if not monster:

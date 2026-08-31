@@ -14,6 +14,6 @@ func _process(delta: float) -> void:
 func on_item_use(player : PlayerController) -> void:
 	var monster_card := MonsterCard.new()
 	monster_card.item_data = monster_card_data.pick_random()
-	player.remove_item_from_inventory(self)
-	player.add_item_to_inventory(monster_card)
+	#player.remove_item_from_inventory(self)
+	#player.add_item_to_inventory(monster_card)
 	
