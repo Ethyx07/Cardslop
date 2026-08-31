@@ -16,8 +16,9 @@ var selected_slot : InventorySlot
 func _ready() -> void:
 	if not controlling_player:
 		return
+		
 	var inventory_size = controlling_player.get_inventory_size()
-	while inventory_slots.size() < inventory_size:
+	while inventory_slots.size() < inventory_size: #Gives us dynamic sizing
 		var inventory_slot = INVENTORY_SLOT.instantiate()
 		$InventoryRow.add_child(inventory_slot)
 		inventory_slots.append(inventory_slot)
@@ -31,6 +32,7 @@ func _process(delta: float) -> void:
 	if not controlling_player:
 		print("Not controlling a player, yikes")
 		return
+		
 	if selected_slot:
 		var item_data = selected_slot.get_item_data() as ItemData
 		if item_data:
@@ -59,9 +61,11 @@ func _input(event: InputEvent) -> void:
 #Updates the currently selected slot to the new one being passed in
 func update_selected_slot(new_slot : PanelContainer) -> void:
 	new_slot.add_theme_stylebox_override("panel", selected_style)
+	
 	if selected_slot and selected_slot != new_slot:
 		selected_slot.remove_theme_stylebox_override("panel")
 		selected_slot.add_theme_stylebox_override("panel", default_style)
+		
 	selected_slot = new_slot
 
 func change_inventory_slot(direction : int) -> void:
@@ -69,6 +73,7 @@ func change_inventory_slot(direction : int) -> void:
 		return
 	
 	var current_index := inventory_slots.find(selected_slot)
+	
 	if current_index == -1:
 		current_index = 0
 	#Reminder Riley: Wrapi treats this as [min, max)
@@ -76,21 +81,23 @@ func change_inventory_slot(direction : int) -> void:
 	
 	update_selected_slot(inventory_slots[new_index])
 
-func get_currently_hovered() -> Item:
+func get_selected_slot_index() -> int:
+	if not selected_slot:
+		return -1
+	return inventory_slots.find(selected_slot)
+	
+func get_selected_item_data() -> ItemData:
 	if not selected_slot:
 		return null
-	return selected_slot.get_item()
-	
-func add_to_inventory(item : Item) -> void:
-	for slot in inventory_slots:
-		if not slot.stored_item:
-			slot.add_item_to_slot(item)
-			return
-	print("full inventory logic")
+		
+	return selected_slot.get_item_data()
 
-func remove_from_inventory(item : Item) -> void:
+func set_inventory(new_inventory : Array[ItemData]) -> void:
 	for slot in inventory_slots:
-		if slot.stored_item == item:
-			slot.clear_slot()
-			return
-	print("not in inventory")
+		slot.clear_slot()
+	
+	for i in new_inventory.size():
+		if i >= inventory_slots.size():
+			break
+		if new_inventory[i]:
+			inventory_slots[i].set_item_data(new_inventory[i])
