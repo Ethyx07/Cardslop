@@ -22,6 +22,7 @@ func _ready() -> void:
 		var inventory_slot = INVENTORY_SLOT.instantiate() as InventorySlot
 		$InventoryRow.add_child(inventory_slot)
 		inventory_slots.append(inventory_slot)
+		inventory_slot.set_multiplayer_authority(get_multiplayer_authority())
 	
 
 

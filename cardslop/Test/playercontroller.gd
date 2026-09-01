@@ -121,7 +121,7 @@ func add_item_to_inventory(item_id : String) -> void:
 		print("Attempting to add item to full inventory")
 		return
 	
-	var new_item := ItemDatabase.create_item(item_id)
+	var new_item := ItemDatabase.create_item(item_id) as ItemData
 	
 	if not new_item:
 		return
@@ -159,9 +159,9 @@ func sync_inventory_to_owner() -> void:
 	if owner_id == multiplayer.get_unique_id(): #Checks if its server that we are updating
 		update_inventory_ui(inventory_data)
 	else:
-		update_inventory_ui.rpc_id(1, inventory_data)
+		update_inventory_ui.rpc_id(owner_id, inventory_data)
 		
-@rpc("authority", "call_remote", "reliable")
+@rpc("any_peer", "call_remote", "reliable")
 func update_inventory_ui(new_inventory : Array[Dictionary]) -> void:
 	if not is_multiplayer_authority():
 		return
