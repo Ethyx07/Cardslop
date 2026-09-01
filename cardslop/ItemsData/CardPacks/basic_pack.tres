@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_fthj6")
-item_key = "basic_pack"
+item_id = "basic_pack"
 item_name = "Basic Pack"
 item_value = 1
 item_sprite = ExtResource("1_vwtq0")

@@ -95,33 +95,39 @@ func get_inventory_size() -> int:
 #		INVENTORY LOGIC
 #--------------------------------------------
 
-#If server we can just add the item
-#If client we want to get the server to add it first then replicate it on our clients
-func request_add_item(item_data : ItemData) -> void:
+#Can only send string cos rpc doesnt like sending resources. This is called by whatever is attempting to add something to this players inventory
+func request_add_item(item_id : String) -> void:
 	if multiplayer.is_server():
-		add_item_to_inventory(item_data)
+		add_item_to_inventory(item_id)
 	else:
-		request_add_item_server.rpc_id(1, item_data)
+		request_add_item_server.rpc_id(1, item_id)
 
 @rpc("any_peer", "call_remote", "reliable")
-func request_add_item_server(item_data : ItemData) -> void:
+func request_add_item_server(item_id : String) -> void:
 	if not multiplayer.is_server():
 		return
 	var sender_id := multiplayer.get_remote_sender_id()
 	if sender_id != get_multiplayer_authority(): #Gotta make sure we only adjust the senders inventory
 		return
 	
-	add_item_to_inventory(item_data)
+	add_item_to_inventory(item_id)
 
 #SERVER ONLY
-func add_item_to_inventory(item_data : ItemData) -> void:
+func add_item_to_inventory(item_id : String) -> void:
 	if not multiplayer.is_server(): 
 		return
 	
 	if inventory.size() >= INVENTORY_SIZE:
+		print("Attempting to add item to full inventory")
 		return
 	
-	inventory.append(item_data)
+	var new_item := ItemDatabase.create_item(item_id)
+	
+	if not new_item:
+		return
+		
+	inventory.append(new_item)
+	
 	sync_inventory_to_owner()
 
 #SERVER ONLY
@@ -136,23 +142,42 @@ func remove_item_from_inventory(slot_index : int) -> void:
 	
 	sync_inventory_to_owner()
 
+func get_inventory_as_dictionaries() -> Array[Dictionary]:
+	var result : Array[Dictionary]
+	
+	for item in inventory:
+		result.append(item.to_dictionary())
+	
+	return result
+
 func sync_inventory_to_owner() -> void:
 	if not multiplayer.is_server():
 		return
 	
+	var inventory_data = get_inventory_as_dictionaries()
 	var owner_id := get_multiplayer_authority() 
 	if owner_id == multiplayer.get_unique_id(): #Checks if its server that we are updating
-		update_inventory_ui(inventory)
+		update_inventory_ui(inventory_data)
 	else:
-		update_inventory_ui.rpc_id(1, inventory)
+		update_inventory_ui.rpc_id(1, inventory_data)
 		
 @rpc("authority", "call_remote", "reliable")
-func update_inventory_ui(new_inventory : Array[ItemData]) -> void:
+func update_inventory_ui(new_inventory : Array[Dictionary]) -> void:
 	if not is_multiplayer_authority():
 		return
 	
 	player_inventory.set_inventory(new_inventory)
 
+
+#--------------------------------------------
+#		INVENTORY INTERACTION LOGIC
+#--------------------------------------------
+
+
+
+#--------------------------------------------
+#		MONSTER LOGIC
+#--------------------------------------------
 
 func set_monster(monster : Monster) -> void:
 	if not monster:
@@ -174,8 +199,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		eye_camera.rotate_x(-relative.y)
 		eye_camera.rotation.x = clamp(eye_camera.rotation.x, deg_to_rad(-40), deg_to_rad(40))
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		#if not current_monster:
-			#try_spawn_monster()
 		var hovered_item = player_inventory.get_currently_hovered() as Item
 		if hovered_item:
 			hovered_item.on_item_use(self)

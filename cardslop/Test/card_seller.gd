@@ -1,6 +1,5 @@
 extends Interactable
 
-const CARD_PACK_DATA = preload("uid://uahckpyfglq8")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,4 +15,4 @@ func on_interacted(player : PlayerController) -> void:
 	super(player)
 	print("card seller as interacted with by ", player.name)
 	
-	player.request_add_item(CARD_PACK_DATA)
+	player.request_add_item("basic_pack")
