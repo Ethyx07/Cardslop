@@ -5,7 +5,8 @@
 
 [resource]
 script = ExtResource("2_surd7")
-item_key = "grass"
+item_id = "grass_starter"
+item_type = 1
 item_name = "Caesar Salad"
 item_sprite = ExtResource("1_y4yh7")
 metadata/_custom_type_script = "uid://c1xjvba2n73i1"

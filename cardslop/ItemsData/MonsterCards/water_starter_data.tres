@@ -5,7 +5,8 @@
 
 [resource]
 script = ExtResource("2_74bgp")
-item_key = "water"
+item_id = "water_starter"
+item_type = 1
 item_name = "Piss Boy"
 item_sprite = ExtResource("1_q1322")
 metadata/_custom_type_script = "uid://c1xjvba2n73i1"

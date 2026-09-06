@@ -1,6 +1,5 @@
 extends Node
 
-
 var item_database := {
 	"basic_pack" : preload("uid://uahckpyfglq8"),
 	"fire_starter" : preload("uid://2twhyqyaf5yo"),
@@ -8,6 +7,9 @@ var item_database := {
 	"grass_starter" : preload("uid://b2wgydhjcfr8l")
 }
 
+var card_lists : Dictionary = {
+	"basic_pack" : ["fire_starter", "water_starter", "grass_starter"]
+}
 
 func create_item(item_id : String) -> ItemData:
 	if not item_database.has(item_id):
@@ -27,3 +29,9 @@ func create_item_from_dictionary(dict : Dictionary) -> ItemData:
 	
 	item.apply_dictionary(dict)
 	return item
+
+
+func get_card_list_from_id(item_id : String) -> Array:
+	if card_lists.has(item_id):
+		return card_lists.get(item_id)
+	return []

@@ -21,8 +21,9 @@ func _ready() -> void:
 	while inventory_slots.size() < inventory_size: #Gives us dynamic sizing
 		var inventory_slot = INVENTORY_SLOT.instantiate() as InventorySlot
 		$InventoryRow.add_child(inventory_slot)
-		inventory_slots.append(inventory_slot)
 		inventory_slot.set_multiplayer_authority(get_multiplayer_authority())
+		inventory_slots.append(inventory_slot)
+		
 	
 
 
@@ -100,6 +101,6 @@ func set_inventory(new_inventory : Array[Dictionary]) -> void:
 	for i in new_inventory.size():
 		if i >= inventory_slots.size():
 			break
-		var item := ItemDatabase.create_item_from_dictionary(new_inventory[i])
+		var item := ItemDatabase.create_item_from_dictionary(new_inventory[i]) as ItemData
 		if item:
 			inventory_slots[i].set_item_data(item)

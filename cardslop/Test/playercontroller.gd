@@ -63,10 +63,10 @@ func _physics_process(delta: float) -> void:
 		var collider = result.collider as Interactable
 		if collider:
 			if hovered_interactable and hovered_interactable != collider:
-				hovered_interactable.set_hovered_over(false) #Disables hovered interactable if we go from one to another in one frame
+				hovered_interactable.set_hovered_over(false, null) #Disables hovered interactable if we go from one to another in one frame
 				
 			hovered_interactable = collider
-			hovered_interactable.set_hovered_over(true)
+			hovered_interactable.set_hovered_over(true, self)
 	else:
 		if hovered_interactable:
 			clear_hovered_interactable()
@@ -85,7 +85,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func clear_hovered_interactable() -> void:
-	hovered_interactable.set_hovered_over(false)
+	hovered_interactable.set_hovered_over(false, null)
 	hovered_interactable = null
 
 func get_inventory_size() -> int:
@@ -135,7 +135,7 @@ func remove_item_from_inventory(slot_index : int) -> void:
 	if not multiplayer.is_server(): 
 		return
 	
-	if slot_index < 0 or slot_index >= inventory.size(): #Cant remove from slot if its an empty one
+	if slot_index < 0 or slot_index >= inventory.size(): #Cant remove from slot if its an empty one or not within our inventory size
 		return
 	
 	inventory.remove_at(slot_index)
@@ -173,8 +173,95 @@ func update_inventory_ui(new_inventory : Array[Dictionary]) -> void:
 #		INVENTORY INTERACTION LOGIC
 #--------------------------------------------
 
+#Got default values for spawning and spawn pos stuff for things that dont need to be spawned into the world
+func request_use_item(slot_index : int, spawn_position : Vector3 = Vector3.ZERO, has_spawn_position : bool = false) -> void:
+	if multiplayer.is_server():
+		use_inventory_item(slot_index, spawn_position, has_spawn_position)
+	else:
+		request_use_item_server.rpc_id(1, slot_index, spawn_position, has_spawn_position)
 
+#Asks the server very nicely to let us use our items
+@rpc("any_peer", "call_remote", "reliable")
+func request_use_item_server(slot_index : int, spawn_position, has_spawn_position) -> void:
+	if not multiplayer.is_server():
+		return
 
+	var sender_id = multiplayer.get_remote_sender_id()
+	
+	if sender_id != get_multiplayer_authority(): #Only want to use the item on the player who requested it
+		return
+		
+	use_inventory_item(slot_index, spawn_position, has_spawn_position)
+	
+#SERVER ONLY FUNCTION: SHOULD NEVER BE CALLED LOCALLY
+func use_inventory_item(slot_index, spawn_position, has_spawn_position) -> void: 
+	if not multiplayer.is_server():
+		return
+	if slot_index < 0 or slot_index >= inventory.size():
+		return
+	var item_data := inventory[slot_index]
+	
+	if item_data:
+		match item_data.item_type:
+			GlobalType.itemTypes.CardPack:
+				open_card_pack(slot_index, item_data)
+			GlobalType.itemTypes.MonsterCard:
+				if has_spawn_position:
+					use_monster_card(slot_index, item_data, spawn_position)
+		
+#Server function
+func open_card_pack(slot_index : int, item_data : ItemData) -> void:
+	if not multiplayer.is_server():
+		return
+	#Temp stuff here
+	var possible_cards = ItemDatabase.get_card_list_from_id(item_data.item_id)
+	if possible_cards.size() <= 0:
+		push_error("Card pack doesnt have card list associated with it")
+		return
+	
+	var new_card_id = possible_cards.pick_random()
+	
+	var new_card = ItemDatabase.create_item(new_card_id)
+	if not new_card:
+		return
+	
+	inventory[slot_index] = new_card
+	
+	sync_inventory_to_owner()
+
+#Server function
+func use_monster_card(slot_index : int, item_data : ItemData, spawn_position : Vector3) -> void:
+	if not multiplayer.is_server():
+		return
+	
+	if current_monster: #Wont be needed in future as we will hide this ui when monsters are spawned 
+		return
+	get_parent().spawn_monster(spawn_position, get_multiplayer_authority(), item_data.item_id)
+	
+	print(
+		"Spawned monster from card: ",
+		item_data.item_id,
+		" | Bonus health: ",
+		item_data.bonus_health,
+		" | Bonus attack: ",
+		item_data.bonus_damage
+	)
+	
+	#Apply bonus effects here
+	
+	#End of bonus effects
+	
+
+func get_item_use_spawn_position() -> Dictionary:
+	var start_pos := eye_camera.global_position
+	var end_pos := start_pos + -(eye_camera.global_basis.z * 20)
+
+	var ray := PhysicsRayQueryParameters3D.create(start_pos,end_pos)
+
+	ray.collision_mask = 1 << 1
+
+	return get_world_3d().direct_space_state.intersect_ray(ray)
+	
 #--------------------------------------------
 #		MONSTER LOGIC
 #--------------------------------------------
@@ -189,19 +276,32 @@ func clear_monster() -> void:
 	current_monster = null
 	monster_spawned = false
 
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
-		
+
 	if event is InputEventMouseMotion:
 		var relative = event.relative * mouse_sensitivity
+
 		head.rotate_y(-relative.x)
 		eye_camera.rotate_x(-relative.y)
-		eye_camera.rotation.x = clamp(eye_camera.rotation.x, deg_to_rad(-40), deg_to_rad(40))
+
+		eye_camera.rotation.x = clamp(eye_camera.rotation.x, deg_to_rad(-40),deg_to_rad(40))
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var hovered_item = player_inventory.get_currently_hovered() as Item
-		if hovered_item:
-			hovered_item.on_item_use(self)
+		var slot_index := player_inventory.get_selected_slot_index()
+
+		if slot_index == -1:
+			return
+
+		var result := get_item_use_spawn_position()
+
+		if result:
+			request_use_item(slot_index, result.position, true)
+		else:
+			request_use_item(slot_index)
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if current_monster:
 			if multiplayer.is_server():
@@ -209,15 +309,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				request_despawn.rpc_id(1, current_monster.name)
 
+
+
 func try_spawn_monster(key : String) -> void:
-	if current_monster:
-		return
-	var startPos := eye_camera.global_position
-	var endPos := startPos + -(eye_camera.global_basis.z * 20)
-	
-	var ray := PhysicsRayQueryParameters3D.create(startPos, endPos)
-	ray.collision_mask = 1 << 1
-	var result := get_world_3d().direct_space_state.intersect_ray(ray)
+	var result := get_item_use_spawn_position()
 	
 	if result:
 		if multiplayer.is_server():

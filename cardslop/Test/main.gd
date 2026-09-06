@@ -5,9 +5,9 @@ const OBJECT = preload("uid://bspd4g0rn741p")
 var players : Array[CharacterBody3D]
 
 var monster_database = {
-	"fire" : preload("uid://pkiyr2cgd6mf"),
-	"water" : preload("uid://nyqbayhmaq5t"),
-	"grass" : preload("uid://byoqg3mpofgvs")
+	"fire_starter" : preload("uid://pkiyr2cgd6mf"),
+	"water_starter" : preload("uid://nyqbayhmaq5t"),
+	"grass_starter" : preload("uid://byoqg3mpofgvs")
 }
 
 func _ready() -> void:

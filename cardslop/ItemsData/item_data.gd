@@ -3,9 +3,11 @@ extends Resource
 class_name ItemData
 
 @export var item_id : String
+@export var item_type : GlobalType.itemTypes
 @export var item_name : String
 @export var item_value : int
 @export var item_sprite : Texture2D
+
 
 
 #Bonus stat stuff
