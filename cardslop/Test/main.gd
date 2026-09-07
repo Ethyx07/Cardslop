@@ -4,12 +4,6 @@ const PLAYERCONTROLLER = preload("uid://cl4xivdhhcbae")
 const OBJECT = preload("uid://bspd4g0rn741p")
 var players : Array[CharacterBody3D]
 
-var monster_database = {
-	"fire_starter" : preload("uid://pkiyr2cgd6mf"),
-	"water_starter" : preload("uid://nyqbayhmaq5t"),
-	"grass_starter" : preload("uid://byoqg3mpofgvs")
-}
-
 func _ready() -> void:
 	Networking.host_created.connect(on_host_created)
 	
@@ -61,7 +55,7 @@ func spawn_from_data(data : Dictionary) -> Node:
 			return null
 		trainer.set_monster(new_monster)
 		new_monster.trainer = trainer
-		new_monster.set_monster_data(monster_database[data["monster_data"]])
+		new_monster.set_monster_data(ItemDatabase.item_database[data["monster_data"]])
 		return new_monster 
 	
 	return null

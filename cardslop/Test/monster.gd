@@ -35,8 +35,8 @@ func _physics_process(delta: float) -> void:
 		var facing_angle = atan2(velocity.x, velocity.z)
 		global_rotation.y = facing_angle
 	
-func set_monster_data(data : Monster_Data)-> void:
-	monster_name = data.monster_name
+func set_monster_data(data : ItemData)-> void:
+	monster_name = data.item_name
 	$name.text = monster_name
 	var material = $MeshInstance3D.get_active_material(0) as StandardMaterial3D
 	var new_material = material.duplicate()

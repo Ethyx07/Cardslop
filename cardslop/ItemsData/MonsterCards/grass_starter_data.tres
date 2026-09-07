@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b2wgydhjcfr8l"]
+[gd_resource type="Resource" script_class="MonsterCardData" format=3 uid="uid://b2wgydhjcfr8l"]
 
 [ext_resource type="Texture2D" uid="uid://b4eq0rb5ndl8w" path="res://Test/TestTexture/GrassTemp.png" id="1_y4yh7"]
-[ext_resource type="Script" uid="uid://c1xjvba2n73i1" path="res://ItemsData/item_data.gd" id="2_surd7"]
+[ext_resource type="Script" uid="uid://bmel4p4obmeuh" path="res://ItemsData/monster_card_data.gd" id="2_y4yh7"]
 
 [resource]
-script = ExtResource("2_surd7")
+script = ExtResource("2_y4yh7")
+monster_colour = Color(0, 1, 0, 1)
 item_id = "grass_starter"
 item_type = 1
 item_name = "Caesar Salad"

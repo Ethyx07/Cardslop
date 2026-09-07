@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		
 	var startPos := eye_camera.global_position
-	var endPos := startPos + -(eye_camera.global_basis.z * 20)
+	var endPos := startPos + -(eye_camera.global_basis.z * 2)
 	
 	var ray := PhysicsRayQueryParameters3D.create(startPos, endPos)
 	ray.collision_mask = 1 << 2
@@ -225,7 +225,8 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	if not new_card:
 		return
 	
-	inventory[slot_index] = new_card
+	new_card.on_received_from_pack(self)
+	#inventory[slot_index] = new_card
 	
 	sync_inventory_to_owner()
 

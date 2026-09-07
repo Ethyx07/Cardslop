@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://2twhyqyaf5yo"]
+[gd_resource type="Resource" script_class="MonsterCardData" format=3 uid="uid://2twhyqyaf5yo"]
 
-[ext_resource type="Script" uid="uid://c1xjvba2n73i1" path="res://ItemsData/item_data.gd" id="1_jekuy"]
 [ext_resource type="Texture2D" uid="uid://c6g53vtimdywj" path="res://Test/TestTexture/FireTemp.png" id="1_rw073"]
+[ext_resource type="Script" uid="uid://bmel4p4obmeuh" path="res://ItemsData/monster_card_data.gd" id="2_rw073"]
 
 [resource]
-script = ExtResource("1_jekuy")
+script = ExtResource("2_rw073")
+monster_colour = Color(0.7943986, 3.2247603e-06, 9.62615e-07, 1)
 item_id = "fire_starter"
 item_type = 1
 item_name = "Hot Cheetos"
