@@ -16,7 +16,6 @@ func apply_dictionary(dict : Dictionary) -> void:
 	item_name = dict.get("item_name", 0)
 
 func on_received_from_pack(player : PlayerController) -> void:
-	item_name = "$%d (Money)" % item_value
 	player.add_item_data_to_inventory(self)
 	
 	

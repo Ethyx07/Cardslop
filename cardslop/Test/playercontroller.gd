@@ -249,10 +249,13 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 		return
 	var new_money = ItemDatabase.create_item("money_card")
 	new_money.item_value = money_value
+	new_money.item_name = "$%d (Money)" % new_money.item_value
 	if not new_money:
 		return
 	cards_in_pack.append(new_card)
 	cards_in_pack.append(new_money)
+	
+	remove_item_from_inventory(slot_index)
 	
 	for card in cards_in_pack:
 		card.on_received_from_pack(self)
