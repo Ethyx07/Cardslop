@@ -22,4 +22,4 @@ func apply_dictionary(dict : Dictionary) -> void:
 
 
 func on_received_from_pack(player : PlayerController) -> void:
-	player.request_add_item(item_id)
+	player.add_item_to_inventory(item_id)

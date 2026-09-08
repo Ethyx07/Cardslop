@@ -130,6 +130,24 @@ func add_item_to_inventory(item_id : String) -> void:
 	
 	sync_inventory_to_owner()
 
+#SERVER ONLY - Different from add item. Add item adds the default item, add_item_data adds a customised version
+func add_item_data_to_inventory(item_data : ItemData) -> void:
+	if not multiplayer.is_server(): 
+		return
+		
+	if inventory.size() >= INVENTORY_SIZE:
+		print("Attempting to add item to full inventory")
+		return
+	
+	if not item_data:
+		return
+	
+	inventory.append(item_data)
+	
+	sync_inventory_to_owner()
+		
+	
+
 #SERVER ONLY
 func remove_item_from_inventory(slot_index : int) -> void:
 	if not multiplayer.is_server(): 
@@ -230,6 +248,7 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	if not new_card:
 		return
 	var new_money = ItemDatabase.create_item("money_card")
+	new_money.item_value = money_value
 	if not new_money:
 		return
 	cards_in_pack.append(new_card)
@@ -237,7 +256,7 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	
 	for card in cards_in_pack:
 		card.on_received_from_pack(self)
-	
+
 	#inventory[slot_index] = new_card
 	
 	sync_inventory_to_owner()
