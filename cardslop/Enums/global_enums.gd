@@ -4,5 +4,6 @@ class_name GlobalType
 
 enum itemTypes {
 	CardPack,
-	MonsterCard
+	MonsterCard,
+	MoneyCard,
 }

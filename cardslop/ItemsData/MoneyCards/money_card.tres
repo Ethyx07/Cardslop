@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoneyCardData" format=3 uid="uid://ckv1qveks2bie"]
+
+[ext_resource type="Texture2D" uid="uid://cjo3hogaa2fpg" path="res://icon.svg" id="1_hh72m"]
+[ext_resource type="Script" uid="uid://bvaxiw2eqo0ak" path="res://ItemsData/money_card_data.gd" id="1_vn80m"]
+
+[resource]
+script = ExtResource("1_vn80m")
+item_id = "money_card"
+item_type = 2
+item_name = "Money"
+item_value = 10
+item_sprite = ExtResource("1_hh72m")
+metadata/_custom_type_script = "uid://bvaxiw2eqo0ak"

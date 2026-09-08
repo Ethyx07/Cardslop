@@ -219,13 +219,25 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 		push_error("Card pack doesnt have card list associated with it")
 		return
 	
-	var new_card_id = possible_cards.pick_random()
+	var cards_in_pack : Array[ItemData]
 	
-	var new_card = ItemDatabase.create_item(new_card_id)
+	var monster_card_list = possible_cards["monster_cards"]
+	var monster_id = monster_card_list.pick_random()
+	
+	
+	var money_value = possible_cards["money_cards"].pick_random()
+	var new_card = ItemDatabase.create_item(monster_id)
 	if not new_card:
 		return
+	var new_money = ItemDatabase.create_item("money_card")
+	if not new_money:
+		return
+	cards_in_pack.append(new_card)
+	cards_in_pack.append(new_money)
 	
-	new_card.on_received_from_pack(self)
+	for card in cards_in_pack:
+		card.on_received_from_pack(self)
+	
 	#inventory[slot_index] = new_card
 	
 	sync_inventory_to_owner()

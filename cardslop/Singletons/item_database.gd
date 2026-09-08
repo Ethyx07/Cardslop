@@ -1,14 +1,23 @@
 extends Node
 
 var item_database := {
+	##Pack types
 	"basic_pack" : preload("uid://uahckpyfglq8"),
+	
+	##Basic Pack Cards
 	"fire_starter" : preload("uid://2twhyqyaf5yo"),
 	"water_starter" : preload("uid://yk8syj882a5q"),
-	"grass_starter" : preload("uid://b2wgydhjcfr8l")
+	"grass_starter" : preload("uid://b2wgydhjcfr8l"),
+	
+	##Money Card,
+	"money_card" : preload("uid://ckv1qveks2bie")
 }
 
 var card_lists : Dictionary = {
-	"basic_pack" : ["fire_starter", "water_starter", "grass_starter"]
+	"basic_pack" : {
+		"monster_cards" : ["fire_starter", "water_starter", "grass_starter"],
+		"money_cards" : [1, 5, 10, 20]
+		}
 }
 
 func create_item(item_id : String) -> ItemData:
@@ -31,7 +40,7 @@ func create_item_from_dictionary(dict : Dictionary) -> ItemData:
 	return item
 
 
-func get_card_list_from_id(item_id : String) -> Array:
+func get_card_list_from_id(item_id : String) -> Dictionary:
 	if card_lists.has(item_id):
 		return card_lists.get(item_id)
-	return []
+	return {}
