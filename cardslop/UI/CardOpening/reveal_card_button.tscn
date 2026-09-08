@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://7idpkh7oe0q8"]
+
+[ext_resource type="Texture2D" uid="uid://ciaq3644sigpt" path="res://Test/TestTexture/CardBasicTemp.png" id="1_adjxe"]
+[ext_resource type="Texture2D" uid="uid://c6g53vtimdywj" path="res://Test/TestTexture/FireTemp.png" id="2_0anrd"]
+[ext_resource type="Script" uid="uid://31eqf0mx3e64" path="res://UI/CardOpening/reveal_card_button.gd" id="3_450j8"]
+
+[node name="RevealCardButton" type="VBoxContainer" unique_id=1847168643]
+texture_filter = 1
+offset_right = 87.0
+offset_bottom = 27.0
+script = ExtResource("3_450j8")
+
+[node name="RevealButton" type="TextureButton" parent="." unique_id=208459340]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("1_adjxe")
+texture_disabled = ExtResource("2_0anrd")
+stretch_mode = 0
+
+[node name="CardName" type="Label" parent="." unique_id=1389985838]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+text = "Card Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="RevealButton" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="RevealButton" to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="RevealButton" to="." method="_on_pressed"]

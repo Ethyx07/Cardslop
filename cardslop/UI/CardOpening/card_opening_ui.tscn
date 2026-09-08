@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://2tbq2668tdw2"]
+
+[ext_resource type="Script" uid="uid://b5njbp68dta6e" path="res://UI/CardOpening/card_opening_ui.gd" id="1_n47fh"]
+[ext_resource type="PackedScene" uid="uid://7idpkh7oe0q8" path="res://UI/CardOpening/reveal_card_button.tscn" id="1_uy3o1"]
+
+[node name="CardOpeningUI" type="Control" unique_id=899677429 node_paths=PackedStringArray("card_buttons")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n47fh")
+card_buttons = [NodePath("VBoxContainer/UpperContainer/RevealCardButton"), NodePath("VBoxContainer/UpperContainer/RevealCardButton"), NodePath("VBoxContainer/UpperContainer/RevealCardButton3"), NodePath("VBoxContainer/LowerContainer/RevealCardButton"), NodePath("VBoxContainer/LowerContainer/RevealCardButton2")]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1677792233]
+custom_minimum_size = Vector2(1000, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="UpperContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1004361965]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="RevealCardButton" parent="VBoxContainer/UpperContainer" unique_id=1847168643 instance=ExtResource("1_uy3o1")]
+layout_mode = 2
+
+[node name="RevealCardButton2" parent="VBoxContainer/UpperContainer" unique_id=1896767606 instance=ExtResource("1_uy3o1")]
+layout_mode = 2
+
+[node name="RevealCardButton3" parent="VBoxContainer/UpperContainer" unique_id=1501585721 instance=ExtResource("1_uy3o1")]
+layout_mode = 2
+
+[node name="LowerContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=931598589]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="RevealCardButton" parent="VBoxContainer/LowerContainer" unique_id=1974484093 instance=ExtResource("1_uy3o1")]
+layout_mode = 2
+
+[node name="RevealCardButton2" parent="VBoxContainer/LowerContainer" unique_id=1524032610 instance=ExtResource("1_uy3o1")]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=1768574095]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Confirm"

@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dasg7aul5qs4u"]
+
+[ext_resource type="Script" uid="uid://bwbej5beq06k0" path="res://Test/player_inventory.gd" id="1_kwpuf"]
+[ext_resource type="StyleBox" uid="uid://d24a0ngjme7xd" path="res://Test/inventory_border.tres" id="2_ks5ju"]
+[ext_resource type="StyleBox" uid="uid://chqj1bogmgedm" path="res://Test/inventory_default.tres" id="3_bchmi"]
+
+[node name="PlayerInventory" type="VBoxContainer" unique_id=243271834 node_paths=PackedStringArray("controlling_player")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -127.0
+offset_right = 250.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+script = ExtResource("1_kwpuf")
+controlling_player = NodePath("")
+selected_style = ExtResource("2_ks5ju")
+default_style = ExtResource("3_bchmi")
+
+[node name="Label" type="Label" parent="." unique_id=1968623556]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="InventoryRow" type="HBoxContainer" parent="." unique_id=340886748]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+theme_override_constants/separation = 29
+alignment = 1

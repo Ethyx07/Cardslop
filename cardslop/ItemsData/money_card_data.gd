@@ -12,7 +12,7 @@ func to_dictionary() -> Dictionary:
 	
 func apply_dictionary(dict : Dictionary) -> void:
 	super(dict)
-	item_value = dict.get("item_value", 0)
+	item_value = dict.get("item_value", 1)
 	item_name = dict.get("item_name", 0)
 
 func on_received_from_pack(player : PlayerController) -> void:

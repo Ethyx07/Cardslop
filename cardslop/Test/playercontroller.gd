@@ -15,7 +15,10 @@ var hovered_interactable : Interactable
 
 @onready var head : Node3D = $Head
 @onready var eye_camera: Camera3D = $Head/EyeCamera
+
+#UI RELATED VARIABLES
 @onready var player_inventory : PlayerInventory = $PlayerUI/PlayerInventory
+@onready var player_card_opening : CardOpeningUI = $PlayerUI/CardOpeningUI
 
 #Server side REAL inventory (not just the visual stuff the ui does)
 var inventory : Array[ItemData] = [] #Empty so sad :(
@@ -226,7 +229,11 @@ func use_inventory_item(slot_index, spawn_position, has_spawn_position) -> void:
 			GlobalType.itemTypes.MonsterCard:
 				if has_spawn_position:
 					use_monster_card(slot_index, item_data, spawn_position)
-		
+
+
+#--------------------------------------------
+#		CARD PACK INTERACTION LOGIC
+#--------------------------------------------		
 #Server function
 func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	if not multiplayer.is_server():
@@ -254,14 +261,16 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 		return
 	cards_in_pack.append(new_card)
 	cards_in_pack.append(new_money)
-	
+	cards_in_pack.append(new_money)
+	cards_in_pack.append(new_money)
+	cards_in_pack.append(new_card)
 	remove_item_from_inventory(slot_index)
 	
 	for card in cards_in_pack:
 		card.on_received_from_pack(self)
 
 	#inventory[slot_index] = new_card
-	
+	player_card_opening.setup_opening(cards_in_pack)
 	sync_inventory_to_owner()
 
 #Server function
