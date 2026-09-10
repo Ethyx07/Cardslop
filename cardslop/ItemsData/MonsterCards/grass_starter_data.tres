@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MonsterCardData" format=3 uid="uid://b2wgydhjcfr8l"]
 
-[ext_resource type="Texture2D" uid="uid://b4eq0rb5ndl8w" path="res://Test/TestTexture/GrassTemp.png" id="1_y4yh7"]
+[ext_resource type="Texture2D" uid="uid://b4eq0rb5ndl8w" path="res://TestTexture/GrassTemp.png" id="1_y4yh7"]
 [ext_resource type="Script" uid="uid://bmel4p4obmeuh" path="res://ItemsData/monster_card_data.gd" id="2_y4yh7"]
 
 [resource]

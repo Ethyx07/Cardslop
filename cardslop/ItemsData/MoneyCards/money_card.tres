@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MoneyCardData" format=3 uid="uid://ckv1qveks2bie"]
 
-[ext_resource type="Texture2D" uid="uid://cjo3hogaa2fpg" path="res://icon.svg" id="1_hh72m"]
+[ext_resource type="Texture2D" uid="uid://rytd6wlj2whp" path="res://TestTexture/CardMoney.png" id="1_hh72m"]
 [ext_resource type="Script" uid="uid://bvaxiw2eqo0ak" path="res://ItemsData/money_card_data.gd" id="1_vn80m"]
 
 [resource]

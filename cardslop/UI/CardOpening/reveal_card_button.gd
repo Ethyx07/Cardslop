@@ -33,7 +33,7 @@ func setup_card_from_dict(data : Dictionary) -> void:
 	var default_data = ItemDatabase.item_database[data["item_id"]] as ItemData
 	
 	card_text.text = data.get("item_name", default_data.item_name)
-	card_button.texture_disabled = default_data.item_sprite
+	card_button.texture_disabled = await CardTextureGenerator.generate(default_data)
 	
 	card_button.disabled = true
 	card_text.self_modulate.a = 1

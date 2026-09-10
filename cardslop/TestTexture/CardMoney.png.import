@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4eq0rb5ndl8w"
-path="res://.godot/imported/GrassTemp.png-d922c9f478e68518e528f38173217680.ctex"
+uid="uid://rytd6wlj2whp"
+path="res://.godot/imported/CardMoney.png-86fc015aca118d9dc429b231c8b53ae1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Test/TestTexture/GrassTemp.png"
-dest_files=["res://.godot/imported/GrassTemp.png-d922c9f478e68518e528f38173217680.ctex"]
+source_file="res://TestTexture/CardMoney.png"
+dest_files=["res://.godot/imported/CardMoney.png-86fc015aca118d9dc429b231c8b53ae1.ctex"]
 
 [params]
 

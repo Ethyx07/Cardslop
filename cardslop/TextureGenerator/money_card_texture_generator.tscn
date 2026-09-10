@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bbpxj4phdgtod"]
+
+[ext_resource type="Texture2D" uid="uid://rytd6wlj2whp" path="res://TestTexture/CardMoney.png" id="1_nkrwy"]
+[ext_resource type="Script" uid="uid://r722jp8qbwbb" path="res://TextureGenerator/money_card_texture_generator.gd" id="1_sumut"]
+
+[node name="MoneyCardTextureGenerator" type="SubViewport" unique_id=1555147187]
+transparent_bg = true
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+script = ExtResource("1_sumut")
+
+[node name="CardVisual" type="Control" parent="." unique_id=1797284295]
+texture_filter = 1
+custom_maximum_size = Vector2(256, 256)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CardVisual" unique_id=153458529]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_nkrwy")
+
+[node name="Label" type="Label" parent="CardVisual" unique_id=1107543887]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -108.0
+offset_right = 19.0
+offset_bottom = -39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "$1"
+horizontal_alignment = 1
+vertical_alignment = 1

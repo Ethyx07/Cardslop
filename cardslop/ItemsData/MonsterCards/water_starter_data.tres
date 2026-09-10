@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MonsterCardData" format=3 uid="uid://yk8syj882a5q"]
 
-[ext_resource type="Texture2D" uid="uid://dskc56835jm7c" path="res://Test/TestTexture/WaterTemp.png" id="1_q1322"]
+[ext_resource type="Texture2D" uid="uid://dskc56835jm7c" path="res://TestTexture/WaterTemp.png" id="1_q1322"]
 [ext_resource type="Script" uid="uid://bmel4p4obmeuh" path="res://ItemsData/monster_card_data.gd" id="2_q1322"]
 
 [resource]

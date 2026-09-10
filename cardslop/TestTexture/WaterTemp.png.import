@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dskc56835jm7c"
-path="res://.godot/imported/WaterTemp.png-6f1ed5a4492f73680b3b9073a9177387.ctex"
+path="res://.godot/imported/WaterTemp.png-8621b8e8801e6d3753493ecd93ee8148.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Test/TestTexture/WaterTemp.png"
-dest_files=["res://.godot/imported/WaterTemp.png-6f1ed5a4492f73680b3b9073a9177387.ctex"]
+source_file="res://TestTexture/WaterTemp.png"
+dest_files=["res://.godot/imported/WaterTemp.png-8621b8e8801e6d3753493ecd93ee8148.ctex"]
 
 [params]
 

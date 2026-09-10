@@ -235,6 +235,10 @@ func use_inventory_item(slot_index, spawn_position, has_spawn_position) -> void:
 #--------------------------------------------
 #		CARD PACK INTERACTION LOGIC
 #--------------------------------------------		
+# Open card pack is called on server when we attempt to use an item and its determined to be a card pack
+# We populate the current_cards list
+# We then setup the UI and go into
+
 #Server function
 func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	if not multiplayer.is_server():

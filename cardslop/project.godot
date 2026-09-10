@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Networking="*uid://8hqs16mv8no5"
 ItemDatabase="*uid://dls5xidfhjwlv"
+CardTextureGenerator="*uid://cd35t4hicog65"
 
 [display]
 

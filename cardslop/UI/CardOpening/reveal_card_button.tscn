@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://7idpkh7oe0q8"]
 
-[ext_resource type="Texture2D" uid="uid://ciaq3644sigpt" path="res://Test/TestTexture/CardBasicTemp.png" id="1_adjxe"]
-[ext_resource type="Texture2D" uid="uid://c6g53vtimdywj" path="res://Test/TestTexture/FireTemp.png" id="2_0anrd"]
+[ext_resource type="Texture2D" uid="uid://ciaq3644sigpt" path="res://TestTexture/CardBasicTemp.png" id="1_adjxe"]
+[ext_resource type="Texture2D" uid="uid://c6g53vtimdywj" path="res://TestTexture/FireTemp.png" id="2_0anrd"]
 [ext_resource type="Script" uid="uid://31eqf0mx3e64" path="res://UI/CardOpening/reveal_card_button.gd" id="3_450j8"]
 
 [node name="RevealCardButton" type="VBoxContainer" unique_id=1847168643]

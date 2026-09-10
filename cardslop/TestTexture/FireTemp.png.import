@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ciaq3644sigpt"
-path="res://.godot/imported/CardBasicTemp.png-74fe476a0252325909a1e84ad0eae8a5.ctex"
+uid="uid://c6g53vtimdywj"
+path="res://.godot/imported/FireTemp.png-3f11ee82ef3ef35219ead701b7e74a29.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Test/TestTexture/CardBasicTemp.png"
-dest_files=["res://.godot/imported/CardBasicTemp.png-74fe476a0252325909a1e84ad0eae8a5.ctex"]
+source_file="res://TestTexture/FireTemp.png"
+dest_files=["res://.godot/imported/FireTemp.png-3f11ee82ef3ef35219ead701b7e74a29.ctex"]
 
 [params]
 
