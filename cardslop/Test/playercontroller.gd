@@ -18,11 +18,12 @@ var hovered_interactable : Interactable
 
 #UI RELATED VARIABLES
 @onready var player_inventory : PlayerInventory = $PlayerUI/PlayerInventory
-@onready var player_card_opening : CardOpeningUI = $PlayerUI/CardOpeningUI
+@onready var player_card_opening = $PlayerUI/CardOpeningUI
 
 #Server side REAL inventory (not just the visual stuff the ui does)
 var inventory : Array[ItemData] = [] #Empty so sad :(
 
+var current_cards_in_pack : Array[ItemData]
 var current_monster_data : String
 
 func _enter_tree() -> void:
@@ -243,13 +244,10 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	if possible_cards.size() <= 0:
 		push_error("Card pack doesnt have card list associated with it")
 		return
-	
-	var cards_in_pack : Array[ItemData]
-	
 	var monster_card_list = possible_cards["monster_cards"]
 	var monster_id = monster_card_list.pick_random()
 	
-	
+	current_cards_in_pack.clear()
 	var money_value = possible_cards["money_cards"].pick_random()
 	var new_card = ItemDatabase.create_item(monster_id)
 	if not new_card:
@@ -259,19 +257,60 @@ func open_card_pack(slot_index : int, item_data : ItemData) -> void:
 	new_money.item_name = "$%d (Money)" % new_money.item_value
 	if not new_money:
 		return
-	cards_in_pack.append(new_card)
-	cards_in_pack.append(new_money)
-	cards_in_pack.append(new_money)
-	cards_in_pack.append(new_money)
-	cards_in_pack.append(new_card)
+	current_cards_in_pack.append(new_card)
+	current_cards_in_pack.append(new_money)
+	current_cards_in_pack.append(new_money)
+	current_cards_in_pack.append(new_money)
+	current_cards_in_pack.append(new_card)
 	remove_item_from_inventory(slot_index)
 	
-	for card in cards_in_pack:
-		card.on_received_from_pack(self)
+	#for card in cards_in_pack:
+		#card.on_received_from_pack(self)
+	var owner_id = get_multiplayer_authority()
+	
+	if owner_id == multiplayer.get_unique_id():
+		player_card_opening.setup_ui()
+	else:
+		player_card_opening.request_setup_ui.rpc_id(owner_id)
 
-	#inventory[slot_index] = new_card
-	player_card_opening.setup_opening(cards_in_pack)
-	sync_inventory_to_owner()
+#Only called on server
+func reveal_card(card_index : int) -> void:
+	if current_cards_in_pack.size() <= card_index:
+		push_error("Attempting to reveal a card outside our pack size")
+		return
+	var card_data = current_cards_in_pack[card_index] as ItemData
+	var card_dict = card_data.to_dictionary()
+	
+	var owner_id := get_multiplayer_authority() 
+	if owner_id == multiplayer.get_unique_id(): #Checks if its server that we are updating
+		player_card_opening.setup_card_data(card_index, card_dict)
+	else:
+		player_card_opening.request_setup_card_data.rpc_id(owner_id, card_index, card_dict)
+	
+@rpc("any_peer", "call_remote", "reliable")
+func request_reveal_card(card_index : int) -> void:
+	if not multiplayer.is_server():
+		return
+	var sender_id = multiplayer.get_remote_sender_id()
+	
+	if sender_id != get_multiplayer_authority(): #Only want to use the item on the player who requested it
+		return
+	reveal_card(card_index)
+
+func complete_pack_opening() -> void:
+	for card in current_cards_in_pack:
+		card.on_received_from_pack(self)
+	
+	
+@rpc("any_peer", "call_remote", "reliable")
+func request_complete_pack_opening() -> void:
+	if not multiplayer.is_server():
+		return
+	var sender_id = multiplayer.get_remote_sender_id()
+	if sender_id != get_multiplayer_authority():
+		return
+	complete_pack_opening()
+
 
 #Server function
 func use_monster_card(slot_index : int, item_data : ItemData, spawn_position : Vector3) -> void:

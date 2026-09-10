@@ -61,5 +61,6 @@ height = 0.0
 [node name="PlayerInventory" parent="PlayerUI" unique_id=243271834 node_paths=PackedStringArray("controlling_player") instance=ExtResource("4_qp46w")]
 controlling_player = NodePath("../..")
 
-[node name="CardOpeningUI" parent="PlayerUI" unique_id=899677429 instance=ExtResource("5_ytppl")]
+[node name="CardOpeningUI" parent="PlayerUI" unique_id=899677429 node_paths=PackedStringArray("controlling_player") instance=ExtResource("5_ytppl")]
 visible = false
+controlling_player = NodePath("../..")
