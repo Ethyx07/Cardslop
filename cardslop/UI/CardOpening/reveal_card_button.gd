@@ -30,12 +30,12 @@ func setup_card(data : ItemData) -> void:
 #Allows for dicts that have different keys (some dont change item_name) to be
 #passed in without errors from missing values
 func setup_card_from_dict(data : Dictionary) -> void:
+	is_revealed = true
 	var default_data = ItemDatabase.item_database[data["item_id"]] as ItemData
 	
 	card_text.text = data.get("item_name", default_data.item_name)
-	card_button.texture_disabled = await CardTextureGenerator.generate(default_data)
+	card_button.texture_disabled = await CardTextureGenerator.generate(default_data, data)
 	
 	card_button.disabled = true
 	card_text.self_modulate.a = 1
 	
-	is_revealed = true

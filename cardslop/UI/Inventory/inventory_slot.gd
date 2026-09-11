@@ -20,7 +20,8 @@ func set_item_data(new_item_data : ItemData) -> void:
 	item_data = new_item_data
 	
 	if item_data:
-		$ItemTexture.texture = await CardTextureGenerator.generate(item_data)
+		#We pass in an empty dictionary since we have already altered our new_item_data
+		$ItemTexture.texture = await CardTextureGenerator.generate(item_data, {}) 
 	else:
 		$ItemTexture.texture = null
 	

@@ -3,8 +3,9 @@ extends SubViewport
 @onready var value_label : Label = $CardVisual/Label
 
 
-func generate(item_data : ItemData) -> Texture2D:
-	value_label.text = "$" + str(item_data.item_value)
+func generate(item_data : ItemData, override_data : Dictionary) -> Texture2D:
+	var value = override_data.get("item_value", item_data.item_value)
+	value_label.text = "$" + str(value)
 
 	await RenderingServer.frame_post_draw
 
